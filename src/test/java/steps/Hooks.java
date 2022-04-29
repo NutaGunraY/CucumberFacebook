@@ -1,8 +1,10 @@
 package steps;
 
+import BaseEnv.Env;
 import io.cucumber.java.After;
 
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import org.apache.commons.io.FileUtils;
 
 import org.openqa.selenium.OutputType;
@@ -13,17 +15,21 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.io.File;
 
 
-
 public class Hooks {
 
-    public WebDriver driver;
+    private Env env;
+    public Hooks(Env env){
+        this.env = env;
+    }
     public WebDriver getDriver(){
         System.setProperty("webdriver.chrome.driver","resources/chromedriver.exe");
         return new ChromeDriver();
     }
-    public void Hooks() {
-        driver = getDriver();
+
+    @Before
+    public void setup(){
     }
+
     public static void takeSnapShot(WebDriver webdriver, String fileWithPath) throws Exception{
         //Convert web driver object to TakeScreenshot
         TakesScreenshot scrShot =((TakesScreenshot)webdriver);
@@ -33,5 +39,12 @@ public class Hooks {
         File DestFile=new File(fileWithPath);
         //Copy file at destination
         FileUtils.copyFile(SrcFile, DestFile);
+    }
+    @After
+    public void afterStep(Scenario scenario){
+        if(scenario.isFailed()){
+            System.out.println(scenario.getStatus());
+        }
+        env.driver.quit();
     }
 }

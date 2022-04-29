@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import static io.restassured.RestAssured.get;
@@ -34,20 +36,10 @@ public class MainPageFeature extends BasePage{
         List<WebElement> links = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("(//ul)[3]/li/div/a")));
         System.out.println("Amount of links: " + links.size());
         for (int i = 0; i < links.size(); i++) {
-            WebElement E1 = links.get(i);
-            String url = E1.getAttribute("href");
+            WebElement link = links.get(i);
+            String url = link.getAttribute("href");
             System.out.println(url);
-            response = get(url);
-            int status = response.getStatusCode();
-            try {
-                if (status == 200) {
-                    System.out.println(status + ": IS OK");
-                } else {
-                    System.out.println(status + " IS NOT OK");
-                }
-
-            } catch (Exception e) {
-            }
+            verifyLinks(url);
         }
     }
 
@@ -72,17 +64,7 @@ public class MainPageFeature extends BasePage{
             WebElement link = links.get(i);
             String url = link.getAttribute("href");
             System.out.println(url);
-            response = get(url);
-            int status = response.getStatusCode();
-            try {
-                if (status == 200) {
-                    System.out.println(status + ": IS OK");
-                } else {
-                    System.out.println(status + " IS NOT OK");
-                }
-
-            } catch (Exception e) {
-            }
+            verifyLinks(url);
         }
     }
 

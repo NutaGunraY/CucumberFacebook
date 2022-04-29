@@ -78,17 +78,7 @@ public class LoginPageFeature extends BasePage{
             WebElement link = links.get(i);
             String url = link.getAttribute("href");
             System.out.println(url);
-            response = get(url);
-            int status = response.getStatusCode();
-            try {
-                if(status == 200) {
-                    System.out.println(status + ": IS OK");
-                }else{
-                    System.out.println(status + " IS NOT OK");
-                }
-
-            }catch(Exception e){
-            }
+            verifyLinks(url);
         }
     }
 
